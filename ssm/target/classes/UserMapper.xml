@@ -5,4 +5,28 @@
             resultType="com.oaec.entity.User">
         select * from users where id=#{id}
     </select>
+
+    <!--<select id="getUserPage" resultType="user" databaseId="mysql">
+            SELECT * FROM  users limit 0,3;
+    </select>
+
+    <select id="getUserPage" resultType="user" databaseId="oracle">
+            SELECT * FROM
+            (SELECT u.*,rownum as r FROM users u WHERE rownum &lt; 3)
+            WHERE r &gt;= 0;
+    </select>-->
+    <select id="getUserPage" resultType="user" >
+        <if test="_databaseId=='mysql'">
+            SELECT * FROM  users limit 0,3;
+        </if>
+        <if test="_databaseId=='oracle'">
+            SELECT * FROM
+            (SELECT u.* ,rownum as r FROM users WHERE rownum &lt; 3)
+            WHERE r &gt; 0;
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="user"  >
+        INSERT INTO users (name,age) VALUES (#{name},#{age})
+    </insert>
 </mapper>

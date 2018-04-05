@@ -7,6 +7,13 @@ public class User {
   private String name;
   private long age;
 
+  public User() {
+  }
+
+  public User(String name, long age) {
+    this.name = name;
+    this.age = age;
+  }
 
   public long getId() {
     return id;

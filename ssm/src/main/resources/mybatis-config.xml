@@ -12,8 +12,15 @@
         This setting forces generated keys to be used if set to true,
          as some drivers deny compatibility but still work -->
         <setting name="useGeneratedKeys" value="true"/>
+        <!-- 延迟加载总开关 -->
+        <setting name="lazyLoadingEnabled" value="true" />
+        <!-- 设置按需加载 -->
+        <setting name="aggressiveLazyLoading" value="false" />
     </settings>
 
+    <typeAliases>
+        <package name="com.oaec.entity"/>
+    </typeAliases>
     <!-- Continue editing here -->
     <environments default="development">
         <environment id="development">
@@ -26,6 +33,12 @@
             </dataSource>
         </environment>
     </environments>
+<
+    <!--配置数据库提供商-->
+    <databaseIdProvider type="DB_VENDOR">
+        <property name="MySQL" value="mysql"/>
+        <property name="Oracle" value="oracle"/>
+    </databaseIdProvider>
 
     <mappers>
         <mapper resource="UserMapper.xml" />

@@ -22,7 +22,7 @@
         <package name="com.oaec.entity"/>
     </typeAliases>
     <!-- Continue editing here -->
-    <environments default="development">
+   <!-- <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"></transactionManager>
             <dataSource type="POOLED">
@@ -32,7 +32,7 @@
                 <property name="password" value="root" />
             </dataSource>
         </environment>
-    </environments>
+    </environments>-->
 <
     <!--配置数据库提供商-->
     <databaseIdProvider type="DB_VENDOR">
@@ -40,7 +40,14 @@
         <property name="Oracle" value="oracle"/>
     </databaseIdProvider>
 
-    <mappers>
-        <mapper resource="UserMapper.xml" />
-    </mappers>
+    <!-- plugins插件 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="reasonable" value="true" />
+        </plugin>
+    </plugins>
+
+    <!--<mappers>
+        <mapper resource="com/oaec/mapper/UserMapper.xml" />
+    </mappers>-->
 </configuration>

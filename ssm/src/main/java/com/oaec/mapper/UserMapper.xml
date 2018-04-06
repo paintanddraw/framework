@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oaec.mapper.UserMapper">
+    <cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/>
+    <!--discriminator識別器-->
+    <resultMap type="com.hw.mybatis.bean.Employee" id="MyEmpDis">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <discriminator javaType="string" column="gender">
+            <!--女生  resultType:指定封装的结果类型；不能缺少。/resultMap-->
+            <case value="0" resultType="com.atguigu.mybatis.bean.Employee">
+                <association property="dept" select="com.atguigu.mybatis.dao.DepartmentMapper.getDeptById"
+                             column="d_id"></association>
+            </case>
+            <!--男生 ;如果是男生，把last_name这一列的值赋值给email; -->
+            <case value="1" resultType="com.hw.mybatis.bean.Employee">
+                <id column="id" property="id"/>
+                <result column="last_name" property="lastName"/>
+                <result column="last_name" property="email"/>
+                <result column="gender" property="gender"/>
+            </case>
+        </discriminator>
+    </resultMap>
+    <select id="getById" parameterType="int"
+            resultType="com.oaec.entity.User">
+        select * from users where id=#{id}
+    </select>
+
+    <!--<select id="getUserPage" resultType="user" databaseId="mysql">
+            SELECT * FROM  users limit 0,3;
+    </select>
+
+    <select id="getUserPage" resultType="user" databaseId="oracle">
+            SELECT * FROM
+            (SELECT u.*,rownum as r FROM users u WHERE rownum &lt; 3)
+            WHERE r &gt;= 0;
+    </select>-->
+    <select id="getUserPage" resultType="user" >
+        <if test="_databaseId=='mysql'">
+            SELECT * FROM  users limit 0,3;
+        </if>
+        <if test="_databaseId=='oracle'">
+            SELECT * FROM
+            (SELECT u.* ,rownum as r FROM users WHERE rownum &lt; 3)
+            WHERE r &gt; 0;
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="user" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO users (name,age) VALUES (#{name},#{age})
+    </insert>
+    <insert id="insert" parameterType="user" databaseId="oracle">
+        <selectKey keyProperty="id" order="BEFORE" resultType="_int">
+            SELECT users.nexval FROM dual;
+        </selectKey>
+        INSERT INTO users(NAME, age) VALUES (#{name},#{age});
+    </insert>
+</mapper>

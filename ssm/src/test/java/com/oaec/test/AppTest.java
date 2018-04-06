@@ -1,7 +1,5 @@
 package com.oaec.test;
 
-import com.oaec.entity.User;
-import com.oaec.mapper.UserMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
